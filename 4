@@ -1,44 +1,57 @@
 
-class Solution {
-public:
-    double findMedianSortedArrays(vector<int>& nums1,
-                                  vector<int>& nums2) {
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-        if (nums1.size() > nums2.size())
-            return findMedianSortedArrays(nums2, nums1);
+double findMedianSortedArrays(vector<int>& nums1, vector<int>& nums2) {
+    vector<int> nums;
 
-        int m = nums1.size();
-        int n = nums2.size();
+    int i = 0, j = 0;
 
-        int left = 0;
-        int right = m;
-
-        while (left <= right) {
-            int i = (left + right) / 2;
-            int j = (m + n + 1) / 2 - i;
-
-            int a = (i == 0) ? INT_MIN : nums1[i - 1];
-            int b = (i == m) ? INT_MAX : nums1[i];
-
-            int c = (j == 0) ? INT_MIN : nums2[j - 1];
-            int d = (j == n) ? INT_MAX : nums2[j];
-
-            if (a <= d && c <= b) {
-                if ((m + n) % 2 == 0) {
-                    return (max(a, c) + (double)min(b, d)) / 2.0;
-                }
-                else {
-                    return max(a, c);
-                }
-            }
-            else if (a > d) {
-                right = i - 1;
-            }
-            else {
-                left = i + 1;
-            }
+    while (i < nums1.size() && j < nums2.size()) {
+        if (nums1[i] < nums2[j]) {
+            nums.push_back(nums1[i]);
+            i++;
+        } else {
+            nums.push_back(nums2[j]);
+            j++;
         }
-
-        return 0.0;
     }
-};
+
+    while (i < nums1.size()) {
+        nums.push_back(nums1[i]);
+        i++;
+    }
+
+    while (j < nums2.size()) {
+        nums.push_back(nums2[j]);
+        j++;
+    }
+
+    int n = nums.size();
+
+    if (n % 2 == 1)
+        return nums[n / 2];
+
+    return (nums[n / 2 - 1] + nums[n / 2]) / 2.0;
+}
+
+int main() {
+    int m, n;
+    cin >> m >> n;
+
+    vector<int> nums1(m), nums2(n);
+
+    for (int i = 0; i < m; i++)
+        cin >> nums1[i];
+
+    for (int i = 0; i < n; i++)
+        cin >> nums2[i];
+
+    cout << findMedianSortedArrays(nums1, nums2);
+
+    return 0;
+}
+
+
