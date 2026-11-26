@@ -1,68 +1,60 @@
 
-class MyCircularDeque {
-private:
-    vector<int> arr;
-    int front, rear;
-    int size, capacity;
+#include <iostream>
+#include <vector>
+using namespace std;
 
-public:
-    MyCircularDeque(int k) {
-        arr.resize(k);
-        front = 0;
-        rear = k - 1;
-        size = 0;
-        capacity = k;
+vector<int> spiralOrder(vector<vector<int>>& matrix) {
+    vector<int> result;
+
+    int top = 0;
+    int bottom = matrix.size() - 1;
+    int left = 0;
+    int right = matrix[0].size() - 1;
+
+    while (top <= bottom && left <= right) {
+
+        for (int i = left; i <= right; i++)
+            result.push_back(matrix[top][i]);
+        top++;
+
+        for (int i = top; i <= bottom; i++)
+            result.push_back(matrix[i][right]);
+        right--;
+
+        if (top <= bottom) {
+            for (int i = right; i >= left; i--)
+                result.push_back(matrix[bottom][i]);
+            bottom--;
+        }
+
+        if (left <= right) {
+            for (int i = bottom; i >= top; i--)
+                result.push_back(matrix[i][left]);
+            left++;
+        }
     }
 
-    bool insertFront(int value) {
-        if (isFull()) return false;
+    return result;
+}
 
-        front = (front - 1 + capacity) % capacity;
-        arr[front] = value;
-        size++;
-        return true;
+int main() {
+    int m, n;
+    cin >> m >> n;
+
+    vector<vector<int>> matrix(m, vector<int>(n));
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            cin >> matrix[i][j];
+        }
     }
 
-    bool insertLast(int value) {
-        if (isFull()) return false;
+    vector<int> result = spiralOrder(matrix);
 
-        rear = (rear + 1) % capacity;
-        arr[rear] = value;
-        size++;
-        return true;
+    for (int x : result) {
+        cout << x << " ";
     }
 
-    bool deleteFront() {
-        if (isEmpty()) return false;
+    return 0;
+}
 
-        front = (front + 1) % capacity;
-        size--;
-        return true;
-    }
-
-    bool deleteLast() {
-        if (isEmpty()) return false;
-
-        rear = (rear - 1 + capacity) % capacity;
-        size--;
-        return true;
-    }
-
-    int getFront() {
-        if (isEmpty()) return -1;
-        return arr[front];
-    }
-
-    int getRear() {
-        if (isEmpty()) return -1;
-        return arr[rear];
-    }
-
-    bool isEmpty() {
-        return size == 0;
-    }
-
-    bool isFull() {
-        return size == capacity;
-    }
-};
