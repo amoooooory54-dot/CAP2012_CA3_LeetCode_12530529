@@ -1,14 +1,31 @@
 
-class Solution {
-public:
-    void moveZeroes(vector<int>& nums) {
-        int index = 0;
+#include <iostream>
+using namespace std;
 
-        for (int i = 0; i < nums.size(); i++) {
-            if (nums[i] != 0) {
-                swap(nums[index], nums[i]);
-                index++;
-            }
+int main() {
+
+    int nums[] = {0, 1, 0, 3, 12};
+    int n = 5;
+
+    int j = 0;
+
+    for (int i = 0; i < n; i++) {
+
+        if (nums[i] != 0) {
+
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+
+            j++;
         }
     }
-};
+
+    cout << "Array after moving zeroes: ";
+
+    for (int i = 0; i < n; i++) {
+        cout << nums[i] << " ";
+    }
+
+    return 0;
+}
