@@ -1,16 +1,51 @@
 
-class Solution {
-public:
-    ListNode *getIntersectionNode(ListNode *headA,
-                                  ListNode *headB) {
-        ListNode* a = headA;
-        ListNode* b = headB;
+#include <iostream>
+using namespace std;
 
-        while (a != b) {
-            a = (a == NULL) ? headB : a->next;
-            b = (b == NULL) ? headA : b->next;
+struct Node {
+    int data;
+    Node* next;
+};
+
+int main() {
+
+    Node* common = new Node{8, NULL};
+    common->next = new Node{10, NULL};
+
+    Node* headA = new Node{3, NULL};
+    headA->next = new Node{7, NULL};
+    headA->next->next = common;
+
+    Node* headB = new Node{5, NULL};
+    headB->next = common;
+
+    Node* tempA = headA;
+    Node* tempB = headB;
+
+    while (tempA != tempB) {
+
+        if (tempA == NULL) {
+            tempA = headB;
+        }
+        else {
+            tempA = tempA->next;
         }
 
-        return a;
+        if (tempB == NULL) {
+            tempB = headA;
+        }
+        else {
+            tempB = tempB->next;
+        }
     }
-};
+
+    if (tempA != NULL) {
+        cout << "Intersection at: " << tempA->data;
+    }
+    else {
+        cout << "No intersection";
+    }
+
+    return 0;
+}
+
