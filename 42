@@ -1,37 +1,50 @@
 
-class Solution {
-public:
-    int trap(vector<int>& height) {
-        int left = 0;
-        int right = height.size() - 1;
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
 
-        int leftMax = 0;
-        int rightMax = 0;
-        int water = 0;
+int trap(vector<int>& height) {
+    int left = 0;
+    int right = height.size() - 1;
 
-        while (left < right) {
-            if (height[left] < height[right]) {
-                if (height[left] >= leftMax) {
-                    leftMax = height[left];
-                }
-                else {
-                    water += leftMax - height[left];
-                }
+    int leftMax = 0;
+    int rightMax = 0;
+    int water = 0;
 
-                left++;
-            }
-            else {
-                if (height[right] >= rightMax) {
-                    rightMax = height[right];
-                }
-                else {
-                    water += rightMax - height[right];
-                }
+    while (left < right) {
+        if (height[left] < height[right]) {
+            if (height[left] >= leftMax)
+                leftMax = height[left];
+            else
+                water += leftMax - height[left];
 
-                right--;
-            }
+            left++;
         }
+        else {
+            if (height[right] >= rightMax)
+                rightMax = height[right];
+            else
+                water += rightMax - height[right];
 
-        return water;
+            right--;
+        }
     }
-};
+
+    return water;
+}
+
+int main() {
+    int n;
+    cin >> n;
+
+    vector<int> height(n);
+
+    for (int i = 0; i < n; i++)
+        cin >> height[i];
+
+    cout << trap(height);
+
+    return 0;
+}
+
